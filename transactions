@@ -1,0 +1,467 @@
+import java.io.*;
+import java.util.*;
+import javax.swing.*;
+
+public class transaction {
+    
+    private static int customerNumber;
+    private static int transactionNumber;
+    private static int quantityOfItem;
+    private static double price;
+    private static double balance;
+    private static double discount;
+    private static double total;
+    private static double payment;
+    private static String orderPayment;
+    private static String productName;
+    public  static String customerName;
+    static String[][] csvTransactionArray = new String[50][50];
+    static String[][] csvMasterArray = new String[50][50];
+    
+    
+    
+    public transaction(int row, int customerNumber, int tranactionNumber, 
+            int quantityOfItem, double price, double balance, double discount,
+            double total, double payment,String orderPayment,
+            String productName, String customerName){
+            
+        customerNumber = transaction.customerNumber;
+        transactionNumber = transaction.transactionNumber;
+        quantityOfItem = transaction.quantityOfItem;
+        price = transaction.price;
+        balance = transaction.balance;
+        discount = transaction.discount;
+        total = price * quantityOfItem;
+        payment = transaction.payment;
+        orderPayment = transaction.orderPayment;
+        productName  = transaction.productName;
+        customerName = transaction.customerName;
+    }
+    public static void transaction(int row){
+        customerNumber = Integer.parseInt(csvTransactionArray[row][0]);
+        customerName = customerName(customerNumber);
+        orderPayment = csvTransactionArray[row][1];
+        transactionNumber = Integer.parseInt(csvTransactionArray[row][2]);
+        if(!"NULL".equals(csvTransactionArray[row][3])){
+           productName = csvTransactionArray[row][3];
+       }
+       if(!"NULL".equals(csvTransactionArray[row][4])){
+       quantityOfItem = Integer.parseInt(csvTransactionArray[row][4]);
+       }
+       if(!"NULL".equals(csvTransactionArray[row][5])){
+           price = Double.parseDouble(csvTransactionArray[row][5]); 
+       }
+       
+       total = price * quantityOfItem;
+        
+       if(!"NULL".equals(csvTransactionArray[row][6])){
+           discount = Double.parseDouble(csvTransactionArray[row][6]);
+       }
+       
+       balance = Double.parseDouble(csvMasterArray[1][3]);
+       
+    } 
+    
+    public static void transactionRow(int custNum, int s){
+        customerNumber = custNum;
+        int start = s;
+        for(int row = start; row <= 30 ; row++){
+            if(Integer.parseInt(csvTransactionArray[row][0]) == custNum){
+                orderPayment = csvTransactionArray[row][1];
+        transactionNumber = Integer.parseInt(csvTransactionArray[row][2]);
+        if(!"NULL".equals(csvTransactionArray[row][3])){
+           productName = csvTransactionArray[row][3];
+       }
+       if(!"NULL".equals(csvTransactionArray[row][4])){
+       quantityOfItem = Integer.parseInt(csvTransactionArray[row][4]);
+       }
+       if(!"NULL".equals(csvTransactionArray[row][5])){
+           price = Double.parseDouble(csvTransactionArray[row][5]); 
+       }
+       
+       total = price * quantityOfItem;
+        
+       if(!"NULL".equals(csvTransactionArray[row][6])){
+           discount = Double.parseDouble(csvTransactionArray[row][6]);
+       }
+       
+    } 
+         start = row;
+         //transaction(row);
+         break;   
+        
+        }
+        if(start >= 30){
+          transactionRow(custNum,start); 
+        }
+           
+        }
+        
+        
+        
+    
+    public static void startProgram(){
+       csvTransactionArray();
+       csvMasterArray();
+       
+       menu();
+        }
+    
+    public static void orderPayment(int row){
+        if("P".equals(orderPayment)){
+            processPayment(row);
+        }else if("O".equals(orderPayment)){
+            processOrder(row);
+        }
+    }
+    
+    public static void processOrder(int row){
+       customerNumber = Integer.parseInt(csvTransactionArray[row][0]);
+       orderPayment = csvTransactionArray[row][1];
+       transactionNumber = Integer.parseInt(csvTransactionArray[row][2]);
+       if(!"NULL".equals(csvTransactionArray[row][3])){
+           productName = csvTransactionArray[row][3];
+       }
+       
+       if(!"NULL".equals(csvTransactionArray[row][4])){
+       quantityOfItem = Integer.parseInt(csvTransactionArray[row][4]);
+       }
+       if(!"NULL".equals(csvTransactionArray[row][5])){
+           price = Double.parseDouble(csvTransactionArray[row][5]); 
+       }
+             
+       total = price * quantityOfItem;
+       
+       if(!"NULL".equals(csvTransactionArray[row][6])){
+           discount = Double.parseDouble(csvTransactionArray[row][6]);
+       }
+       
+       
+    }
+    
+    public static void processPayment(int row){
+       customerNumber = Integer.parseInt(csvTransactionArray[row][0]);
+       orderPayment = csvTransactionArray[row][1];
+       transactionNumber = Integer.parseInt(csvTransactionArray[row][2]);
+       if(!"NULL".equals(csvTransactionArray[row][5])){
+           payment = Double.parseDouble(csvTransactionArray[row][5]);
+       }
+       
+    }
+
+
+    
+        public static void menu(){
+            String ch = JOptionPane.showInputDialog("Select an option\n" + 
+                            "Print master file array - 1\n" +
+                            "Print transaction file array - 2\n" +
+                            "Process and print customer's balance sheet - 3\n" +
+                            "Exit - 0");
+       
+        int choice = Integer.parseInt(ch);
+        
+        if(choice == 1){
+            printMasterArray();
+        }else if(choice == 2){
+          printTransactionArray(); 
+        }else if(choice == 3){
+            
+            ch = JOptionPane.showInputDialog("Select a customer to view" 
+                    +"balanceSheet\n" + "1111 - IBM\n" + "1121 - Dell\n"
+                    +"1110 - S&P\n" + "9999 - Microsoft\n" + "1212 - Google \n" 
+                    +"1010 - Apple\n" + "2222 - Netflix");
+            choice = Integer.parseInt(ch);
+            
+            if(choice == 1111){
+                findCustomerBalanceSheet(choice);
+            }else if(choice == 1121){
+                findCustomerBalanceSheet(choice);
+            }else if(choice == 1110){
+                findCustomerBalanceSheet(choice);
+            }else if(choice == 9999){
+                findCustomerBalanceSheet(choice);
+            }else if(choice == 1212){
+                findCustomerBalanceSheet(choice);
+            }else if(choice == 1010){
+                findCustomerBalanceSheet(choice);
+            }else if(choice == 2222){
+                findCustomerBalanceSheet(choice);
+            }else{
+                menu();
+            }
+        }
+    }
+    
+    
+    static void printTransactionArray(){
+            // print the array
+            System.out.println("\n ************ Transaction File ************");
+            for(int Rowc = 0; Rowc < 31; Rowc++){
+                for(int Colc = 0; Colc < 7; Colc++){
+                    System.out.print(csvTransactionArray[Rowc][Colc] + " ");
+                }
+                System.out.println();
+            }
+        }
+    
+    static void printMasterArray(){
+            // print the array
+            System.out.println("\n ************ Master File ************");
+            for(int Rowc = 0; Rowc < 7; Rowc++){
+                for(int Colc = 0; Colc < 3; Colc++){
+                    System.out.print(csvMasterArray[Rowc][Colc] + " ");
+                }
+                System.out.println();
+            }
+        }
+    
+    static void csvTransactionArray(){
+
+        
+        Scanner scanner = null;
+        
+        int Rowc = 0;
+        String inputLine;
+
+        String transactionFileLocation = 
+                "/Users/patrickpina/Downloads/TransactionFile03.csv";
+        
+        
+        
+        try{
+            // Scanner class
+            
+        scanner = new Scanner(new BufferedReader(new FileReader (transactionFileLocation)));
+        
+        while (scanner.hasNextLine()){
+            
+            // Read line in from file
+            inputLine = scanner.nextLine();
+            
+            // Split the inputline into an array at the commas
+            String[] inArray = inputLine.split(",");
+            
+            //copy the content of the inArray to the myArray
+            System.arraycopy(inArray, 0, csvTransactionArray[Rowc], 0, inArray.length);
+            
+            // Increment the row in the array
+            Rowc ++;
+            
+        }
+        }catch(FileNotFoundException e){
+            System.out.println(e);
+        }
+    }
+        static void csvMasterArray(){
+
+        
+        Scanner scanner = null;
+        
+        int Rowc = 0;
+        
+        String inputLine;
+
+        String MasterFileLocation = 
+                "/Users/patrickpina/Downloads/masterFile.csv";
+        
+        
+        
+        try{
+            // Scanner class
+            
+        scanner = new Scanner(new BufferedReader(new FileReader (MasterFileLocation)));
+        
+        while (scanner.hasNextLine()){
+            
+            // Read line in from file
+            inputLine = scanner.nextLine();
+            
+            // Split the inputline into an array at the commas
+            String[] inArray = inputLine.split(",");
+            
+            //copy the content of the inArray to the myArray
+            System.arraycopy(inArray, 0, csvMasterArray[Rowc], 0, inArray.length);
+            
+            // Increment the row in the array
+            Rowc ++;
+            
+        }
+        }catch(FileNotFoundException e){
+            System.out.println(e);
+        }
+        
+        
+        }
+    public static void setArrayRow(int row){
+
+       customerNumber = Integer.parseInt(csvTransactionArray[row][0]);
+       //customerName = customerName(customerNumber);
+       orderPayment = csvTransactionArray[row][1];
+       transactionNumber = Integer.parseInt(csvTransactionArray[row][2]);
+       if(!"NULL".equals(csvTransactionArray[row][3])){
+           productName = csvTransactionArray[row][3];
+       }
+       
+       if(!"NULL".equals(csvTransactionArray[row][4])){
+           quantityOfItem = Integer.parseInt(csvTransactionArray[row][4]);
+       }
+       if(!"NULL".equals(csvTransactionArray[row][5])){
+           price = Double.parseDouble(csvTransactionArray[row][5]);
+       }
+       //System.out.println(Arrays.deepToString(csvMasterArray));
+       if("NULL".equals(csvTransactionArray[row][2]) || null == csvTransactionArray[row][2] ){
+           balance = 00.0;
+       }else{
+           balance = Double.parseDouble(csvMasterArray[row][2]);
+       }
+       
+       total = price * quantityOfItem;
+       
+       
+       if("NULL".equals(csvTransactionArray[row][6]))
+           discount = 1.0;
+       else{
+           discount = Double.parseDouble(csvTransactionArray[row][6]);
+           discount *= .01;
+       }
+       //customerName = customerName(row);
+       
+       
+   }
+    
+    public void addBalance(int p){
+        balance += p;
+    }
+    
+    public void payment(int p){
+        balance -= p;
+    }
+    
+    public static String customerName(int custNumber){
+        switch (custNumber) {
+            case 1111:
+                customerName = "IBM";
+                break;
+            case 1121:
+                customerName = "Dell";
+                break;
+            case 1110:
+                customerName = "S&P";
+                break;
+            case 9999:
+                customerName = "Microsoft";
+                break;
+            case 1010:
+                customerName = "Apple";
+                break;
+            case 1212:
+                customerName = "Google";
+                break;
+            case 2222:
+                customerName = "Netflix";
+                break;
+            default:
+                break;
+        }
+         return customerName;                      
+    }
+    
+    public static double getBalance(int custNumber){
+        for(int i = 1; i < 8; i++){
+           if(custNumber == Integer.parseInt(csvMasterArray[i][0])){
+               balance = Double.parseDouble(csvMasterArray[i][2]);
+               break;
+           }
+        }
+     return balance;           
+    }
+    
+   public static double getPayment(int row){
+            if("NULL".equals(csvMasterArray[row][5]) ){
+                return 0.00;
+            }else{
+                return Double.parseDouble(csvMasterArray[row][5]);
+            }
+    }
+    
+    public void calculatePrice(int price, int quanity){
+        balance = balance + ((price * quanity)- (price * quanity)* discount);
+    }
+  
+    
+    public static void printBalanceSheetLineOrder(int row){
+        setArrayRow(row);
+        
+        System.out.println(transactionNumber + "\t\t" + productName + "\t\t"
+                + "$" + total);
+    }
+    
+    public static void printBalanceSheetLinePayment(int row){
+        setArrayRow(row);
+        
+        System.out.println(transactionNumber + "\t\t" + "payment"  + "\t\t"
+                + "$" + price);
+    }
+
+    public static void findCustomerBalanceSheet(int custNum){
+
+        balance = getBalance(custNum);
+        
+        System.out.println(customerName(custNum) + "\t\t\t\t" +  custNum);
+        System.out.println("");
+        System.out.println("\t\tPrevious Balance: \t\t $" + balance);
+        System.out.println("");
+
+        for(int row = 1; row <= 31; row++ ){
+            int x = Integer.parseInt(csvTransactionArray[row][0]);
+            if(custNum == x){
+               if("O".equals(csvTransactionArray[row][1])){
+                   printBalanceSheetLineOrder(row);
+               }else if("P".equals(csvTransactionArray[row][1])){
+                   printBalanceSheetLinePayment(row);
+               }
+            }
+        }
+       
+    }
+    
+    public static void printTransaction(int row){
+        setArrayRow(row);
+        System.out.println(transactionNumber + "\t\t\t\t " + productName
+                + "\t\t  " + price + "\t\t  " + quantityOfItem + "\t\t\t "
+                + total + "  \t" + discount);
+    }
+    
+    public static void printTransactionRecord(int row){
+        System.out.println("Customer Number : "  + csvTransactionArray[row][0]);
+        System.out.println("Customer Name: " + customerName(row));
+        System.out.println("Order / Payment : " + csvTransactionArray[row][1]);
+        System.out.println("Transaction Number: " + csvTransactionArray[row][2]);
+        System.out.println("Product Name: " + csvTransactionArray[row][3]);
+        System.out.println("Quantity of Items: " + csvTransactionArray[row][4]);
+        System.out.println("Price: " + csvTransactionArray[row][5]);
+        System.out.println("Discount : " + csvTransactionArray[row][6] + "%");
+    }
+  
+    public void applyTransaction(){
+        
+    }
+    
+    public static void applyDiscount(double dis){
+        total = (price * quantityOfItem) * discount;
+    }
+    
+    public void writeBalance(int customerNumber, double balance){
+        
+    }
+    
+    
+    public static void main(String args[]) {
+        
+       
+      
+       
+       startProgram();
+       
+    }
+}
